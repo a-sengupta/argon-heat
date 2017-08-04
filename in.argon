@@ -1,7 +1,8 @@
 dimension 3
 units     lj
-lattice   fcc 0.5
-region    overall block 0 18 0 3 0 3 units box
+lattice   fcc 4
+region    overall block 0 40 0 3 0 3 units box
+region    moving_region block 3 37 0 3 0 3 units box
 create_box 1 overall
 
 ### Fixed Left ###
@@ -19,20 +20,179 @@ group         hot region box2
 
 ### Argon layer ###
 
-region   box3 block 7.1 11 0 3 0 3 units box
-create_atoms  1 region box3
-group         argon region box3
+region layer1 block 7.1 8 0 3 0 3 units box 
+create_atoms  1 region layer1 
+group argon1 region layer1 
+ 
+compute temp1 argon1 temp 
+ 
+region layer2 block 8.1 9 0 3 0 3 units box 
+create_atoms  1 region layer2 
+group argon2 region layer2 
+ 
+compute temp2 argon2 temp 
+ 
+region layer3 block 9.1 10 0 3 0 3 units box 
+create_atoms  1 region layer3 
+group argon3 region layer3 
+ 
+compute temp3 argon3 temp 
+ 
+region layer4 block 10.1 11 0 3 0 3 units box 
+create_atoms  1 region layer4 
+group argon4 region layer4 
+ 
+compute temp4 argon4 temp 
+ 
+region layer5 block 11.1 12 0 3 0 3 units box 
+create_atoms  1 region layer5 
+group argon5 region layer5 
+ 
+compute temp5 argon5 temp 
+ 
+region layer6 block 12.1 13 0 3 0 3 units box 
+create_atoms  1 region layer6 
+group argon6 region layer6 
+ 
+compute temp6 argon6 temp 
+ 
+region layer7 block 13.1 14 0 3 0 3 units box 
+create_atoms  1 region layer7 
+group argon7 region layer7 
+ 
+compute temp7 argon7 temp 
+ 
+region layer8 block 14.1 15 0 3 0 3 units box 
+create_atoms  1 region layer8 
+group argon8 region layer8 
+ 
+compute temp8 argon8 temp 
+ 
+region layer9 block 15.1 16 0 3 0 3 units box 
+create_atoms  1 region layer9 
+group argon9 region layer9 
+ 
+compute temp9 argon9 temp 
+ 
+region layer10 block 16.1 17 0 3 0 3 units box 
+create_atoms  1 region layer10 
+group argon10 region layer10 
+ 
+compute temp10 argon10 temp 
+ 
+region layer11 block 17.1 18 0 3 0 3 units box 
+create_atoms  1 region layer11 
+group argon11 region layer11 
+ 
+compute temp11 argon11 temp 
+ 
+region layer12 block 18.1 19 0 3 0 3 units box 
+create_atoms  1 region layer12 
+group argon12 region layer12 
+ 
+compute temp12 argon12 temp 
+ 
+region layer13 block 19.1 20 0 3 0 3 units box 
+create_atoms  1 region layer13 
+group argon13 region layer13 
+ 
+compute temp13 argon13 temp 
+ 
+region layer14 block 20.1 21 0 3 0 3 units box 
+create_atoms  1 region layer14 
+group argon14 region layer14 
+ 
+compute temp14 argon14 temp 
+ 
+region layer15 block 21.1 22 0 3 0 3 units box 
+create_atoms  1 region layer15 
+group argon15 region layer15 
+ 
+compute temp15 argon15 temp 
+ 
+region layer16 block 22.1 23 0 3 0 3 units box 
+create_atoms  1 region layer16 
+group argon16 region layer16 
+ 
+compute temp16 argon16 temp 
+ 
+region layer17 block 23.1 24 0 3 0 3 units box 
+create_atoms  1 region layer17 
+group argon17 region layer17 
+ 
+compute temp17 argon17 temp 
+ 
+region layer18 block 24.1 25 0 3 0 3 units box 
+create_atoms  1 region layer18 
+group argon18 region layer18 
+ 
+compute temp18 argon18 temp 
+ 
+region layer19 block 25.1 26 0 3 0 3 units box 
+create_atoms  1 region layer19 
+group argon19 region layer19 
+ 
+compute temp19 argon19 temp 
+ 
+region layer20 block 26.1 27 0 3 0 3 units box 
+create_atoms  1 region layer20 
+group argon20 region layer20 
+ 
+compute temp20 argon20 temp 
+ 
+region layer21 block 27.1 28 0 3 0 3 units box 
+create_atoms  1 region layer21 
+group argon21 region layer21 
+ 
+compute temp21 argon21 temp 
+ 
+region layer22 block 28.1 29 0 3 0 3 units box 
+create_atoms  1 region layer22 
+group argon22 region layer22 
+ 
+compute temp22 argon22 temp 
+ 
+region layer23 block 29.1 30 0 3 0 3 units box 
+create_atoms  1 region layer23 
+group argon23 region layer23 
+ 
+compute temp23 argon23 temp 
+ 
+region layer24 block 30.1 31 0 3 0 3 units box 
+create_atoms  1 region layer24 
+group argon24 region layer24 
+ 
+compute temp24 argon24 temp 
+ 
+region layer25 block 31.1 32 0 3 0 3 units box 
+create_atoms  1 region layer25 
+group argon25 region layer25 
+ 
+compute temp25 argon25 temp 
+ 
+region layer26 block 32.1 33 0 3 0 3 units box 
+create_atoms  1 region layer26 
+group argon26 region layer26 
+ 
+compute temp26 argon26 temp 
+ 
+
+ 
+
+
+ 
+ 
 
 
 ### Cold ###
 
-region   box4 block 11.1 15 0 3 0 3 units box
+region   box4 block 33.1 37 0 3 0 3 units box
 create_atoms  1 region box4
 group         cold region box4
 
 ### Fixed Right ####
 
-region   box5 block 15.1 18 0 3 0 3 units box
+region   box5 block 37.1 40 0 3 0 3 units box
 create_atoms  1 region box5
 group         fixed_right region box5
 
@@ -41,19 +201,32 @@ mass * 1.0
 pair_style   lj/cut 2.6
 pair_coeff   * * 1.0 1.0
 
+group moving_group region moving_region
 
-velocity  hot create 0.0826 28711 mom yes rot yes dist gaussian
+velocity  hot create 0.6608 28711 mom yes rot yes dist gaussian
 velocity  cold create 0.0826 28712 mom yes rot yes dist gaussian
 velocity  all set NULL NULL NULL units box
 
-compute   MyTemp argon temp/partial 1 1 1
-fix nve1 cold nve
-fix nve2 hot nve
-fix nve3 argon nve
+
+
+
+
+
+fix nve1 moving_group nve
+
+
 
 timestep 0.001
-thermo_style custom step c_MyTemp pe etotal
-thermo 100
+thermo_style custom step  c_temp1  c_temp2  c_temp3  c_temp4  c_temp5  c_temp6  c_temp7  c_temp8  c_temp9  c_temp10  c_temp11  c_temp12  c_temp13  c_temp14  c_temp15  c_temp16  c_temp17  c_temp18  c_temp19  c_temp20  c_temp21  c_temp22  c_temp23  c_temp24  c_temp25  c_temp26
+thermo 50
 
-dump xyz all xyz 50 [03.08]argon2.xyz
-run 100000
+dump xyz all xyz 5 [04.08]argon_separate_layers2.xyz
+
+run 50 start 0 stop 150
+
+fix nvt_hot hot nvt temp 0.6608 0.6608 10
+fix nvt_cold cold nvt temp 0.0826 0.0826 10
+
+
+
+run 150 start 0 stop 150 pre no
