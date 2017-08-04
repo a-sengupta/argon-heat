@@ -1,0 +1,59 @@
+dimension 3
+units     lj
+lattice   fcc 0.5
+region    overall block 0 18 0 3 0 3 units box
+create_box 1 overall
+
+### Fixed Left ###
+
+region   box1 block 0 3 0 3 0 3 units box
+create_atoms  1 region box1
+group         fixed_left region box1
+
+### Hot ###
+
+region   box2 block 3.1 7 0 3 0 3 units box
+create_atoms  1 region box2
+group         hot region box2
+
+
+### Argon layer ###
+
+region   box3 block 7.1 11 0 3 0 3 units box
+create_atoms  1 region box3
+group         argon region box3
+
+
+### Cold ###
+
+region   box4 block 11.1 15 0 3 0 3 units box
+create_atoms  1 region box4
+group         cold region box4
+
+### Fixed Right ####
+
+region   box5 block 15.1 18 0 3 0 3 units box
+create_atoms  1 region box5
+group         fixed_right region box5
+
+### Particle and region properties ###
+mass * 1.0    
+pair_style   lj/cut 2.6
+pair_coeff   * * 1.0 1.0
+
+
+velocity  hot create 0.0826 28711 mom yes rot yes dist gaussian
+velocity  cold create 0.0826 28712 mom yes rot yes dist gaussian
+velocity  all set NULL NULL NULL units box
+
+compute   MyTemp argon temp/partial 1 1 1
+fix nve1 cold nve
+fix nve2 hot nve
+fix nve3 argon nve
+
+timestep 0.001
+thermo_style custom step c_MyTemp pe etotal
+thermo 100
+
+dump xyz all xyz 50 [03.08]argon2.xyz
+run 100000
