@@ -1,0 +1,273 @@
+dimension 3
+units     lj
+lattice   fcc 4
+region    overall block 0 74 0 3 0 3 units box
+region    argon_region block 7 67 0 3 0 3 units box
+create_box 1 overall
+
+### Fixed Left ###
+
+region   box1 block 0 3 0 3 0 3 units box
+create_atoms  1 region box1
+group         fixed_left region box1
+
+### Hot ###
+
+region   box2 block 3.1 7 0 3 0 3 units box
+create_atoms  1 region box2
+group         hot region box2
+
+
+### Argon layer ###
+
+region layer1 block 7.1 67 0 3 0 3 units box 
+create_atoms  1 region layer1 
+
+#Group for argon already made below in particle and region properties section
+ 
+
+
+### Cold ###
+
+region   box4 block 67.1 71 0 3 0 3 units box
+create_atoms  1 region box4
+group         cold region box4
+
+### Fixed Right ####
+
+region   box5 block 71.1 74 0 3 0 3 units box
+create_atoms  1 region box5
+group         fixed_right region box5
+
+### Particle and region properties ###
+mass * 1.0    
+pair_style   lj/cut 2.6
+pair_coeff   * * 1.0 1.0
+
+group argon_group region argon_region
+
+##Set temp/region computes
+
+compute hot_temp hot temp/region box2
+compute cold_temp cold temp/region box4
+compute argon_temp argon_group temp/region argon_region
+
+
+##First set all non-fixed atoms at 10K
+velocity  hot create 0.0826 28711 mom yes rot yes dist gaussian
+velocity  cold create 0.0826 28712 mom yes rot yes dist gaussian
+#velocity  all set NULL NULL NULL units box
+velocity  argon_group create 0.0826 28713 mom yes rot yes dist gaussian
+
+
+##Thermostats
+fix nvt_hot hot nvt temp 0.0826 0.0826 10
+fix_modify nvt_hot temp hot_temp
+
+fix nvt_cold cold nvt temp 0.0826 0.0826 10
+fix_modify nvt_cold temp cold_temp
+
+
+
+#Integrator for argon
+
+fix nve1 argon_group nve
+#fix nve2 hot nve
+#fix nve3 cold nve
+
+### Temperature computes for argon layers ###
+
+region argon_layer1 block 7 8 0 3 0 3 units box 
+compute argon_temp1 argon_group temp/region argon_layer1 
+ 
+region argon_layer2 block 8 9 0 3 0 3 units box 
+compute argon_temp2 argon_group temp/region argon_layer2 
+ 
+region argon_layer3 block 9 10 0 3 0 3 units box 
+compute argon_temp3 argon_group temp/region argon_layer3 
+ 
+region argon_layer4 block 10 11 0 3 0 3 units box 
+compute argon_temp4 argon_group temp/region argon_layer4 
+ 
+region argon_layer5 block 11 12 0 3 0 3 units box 
+compute argon_temp5 argon_group temp/region argon_layer5 
+ 
+region argon_layer6 block 12 13 0 3 0 3 units box 
+compute argon_temp6 argon_group temp/region argon_layer6 
+ 
+region argon_layer7 block 13 14 0 3 0 3 units box 
+compute argon_temp7 argon_group temp/region argon_layer7 
+ 
+region argon_layer8 block 14 15 0 3 0 3 units box 
+compute argon_temp8 argon_group temp/region argon_layer8 
+ 
+region argon_layer9 block 15 16 0 3 0 3 units box 
+compute argon_temp9 argon_group temp/region argon_layer9 
+ 
+region argon_layer10 block 16 17 0 3 0 3 units box 
+compute argon_temp10 argon_group temp/region argon_layer10 
+ 
+region argon_layer11 block 17 18 0 3 0 3 units box 
+compute argon_temp11 argon_group temp/region argon_layer11 
+ 
+region argon_layer12 block 18 19 0 3 0 3 units box 
+compute argon_temp12 argon_group temp/region argon_layer12 
+ 
+region argon_layer13 block 19 20 0 3 0 3 units box 
+compute argon_temp13 argon_group temp/region argon_layer13 
+ 
+region argon_layer14 block 20 21 0 3 0 3 units box 
+compute argon_temp14 argon_group temp/region argon_layer14 
+ 
+region argon_layer15 block 21 22 0 3 0 3 units box 
+compute argon_temp15 argon_group temp/region argon_layer15 
+ 
+region argon_layer16 block 22 23 0 3 0 3 units box 
+compute argon_temp16 argon_group temp/region argon_layer16 
+ 
+region argon_layer17 block 23 24 0 3 0 3 units box 
+compute argon_temp17 argon_group temp/region argon_layer17 
+ 
+region argon_layer18 block 24 25 0 3 0 3 units box 
+compute argon_temp18 argon_group temp/region argon_layer18 
+ 
+region argon_layer19 block 25 26 0 3 0 3 units box 
+compute argon_temp19 argon_group temp/region argon_layer19 
+ 
+region argon_layer20 block 26 27 0 3 0 3 units box 
+compute argon_temp20 argon_group temp/region argon_layer20 
+ 
+region argon_layer21 block 27 28 0 3 0 3 units box 
+compute argon_temp21 argon_group temp/region argon_layer21 
+ 
+region argon_layer22 block 28 29 0 3 0 3 units box 
+compute argon_temp22 argon_group temp/region argon_layer22 
+ 
+region argon_layer23 block 29 30 0 3 0 3 units box 
+compute argon_temp23 argon_group temp/region argon_layer23 
+ 
+region argon_layer24 block 30 31 0 3 0 3 units box 
+compute argon_temp24 argon_group temp/region argon_layer24 
+ 
+region argon_layer25 block 31 32 0 3 0 3 units box 
+compute argon_temp25 argon_group temp/region argon_layer25 
+ 
+region argon_layer26 block 32 33 0 3 0 3 units box 
+compute argon_temp26 argon_group temp/region argon_layer26 
+ 
+region argon_layer27 block 33 34 0 3 0 3 units box 
+compute argon_temp27 argon_group temp/region argon_layer27 
+ 
+region argon_layer28 block 34 35 0 3 0 3 units box 
+compute argon_temp28 argon_group temp/region argon_layer28 
+ 
+region argon_layer29 block 35 36 0 3 0 3 units box 
+compute argon_temp29 argon_group temp/region argon_layer29 
+ 
+region argon_layer30 block 36 37 0 3 0 3 units box 
+compute argon_temp30 argon_group temp/region argon_layer30 
+ 
+region argon_layer31 block 37 38 0 3 0 3 units box 
+compute argon_temp31 argon_group temp/region argon_layer31 
+ 
+region argon_layer32 block 38 39 0 3 0 3 units box 
+compute argon_temp32 argon_group temp/region argon_layer32 
+ 
+region argon_layer33 block 39 40 0 3 0 3 units box 
+compute argon_temp33 argon_group temp/region argon_layer33 
+ 
+region argon_layer34 block 40 41 0 3 0 3 units box 
+compute argon_temp34 argon_group temp/region argon_layer34 
+ 
+region argon_layer35 block 41 42 0 3 0 3 units box 
+compute argon_temp35 argon_group temp/region argon_layer35 
+ 
+region argon_layer36 block 42 43 0 3 0 3 units box 
+compute argon_temp36 argon_group temp/region argon_layer36 
+ 
+region argon_layer37 block 43 44 0 3 0 3 units box 
+compute argon_temp37 argon_group temp/region argon_layer37 
+ 
+region argon_layer38 block 44 45 0 3 0 3 units box 
+compute argon_temp38 argon_group temp/region argon_layer38 
+ 
+region argon_layer39 block 45 46 0 3 0 3 units box 
+compute argon_temp39 argon_group temp/region argon_layer39 
+ 
+region argon_layer40 block 46 47 0 3 0 3 units box 
+compute argon_temp40 argon_group temp/region argon_layer40 
+ 
+region argon_layer41 block 47 48 0 3 0 3 units box 
+compute argon_temp41 argon_group temp/region argon_layer41 
+ 
+region argon_layer42 block 48 49 0 3 0 3 units box 
+compute argon_temp42 argon_group temp/region argon_layer42 
+ 
+region argon_layer43 block 49 50 0 3 0 3 units box 
+compute argon_temp43 argon_group temp/region argon_layer43 
+ 
+region argon_layer44 block 50 51 0 3 0 3 units box 
+compute argon_temp44 argon_group temp/region argon_layer44 
+ 
+region argon_layer45 block 51 52 0 3 0 3 units box 
+compute argon_temp45 argon_group temp/region argon_layer45 
+ 
+region argon_layer46 block 52 53 0 3 0 3 units box 
+compute argon_temp46 argon_group temp/region argon_layer46 
+ 
+region argon_layer47 block 53 54 0 3 0 3 units box 
+compute argon_temp47 argon_group temp/region argon_layer47 
+ 
+region argon_layer48 block 54 55 0 3 0 3 units box 
+compute argon_temp48 argon_group temp/region argon_layer48 
+ 
+region argon_layer49 block 55 56 0 3 0 3 units box 
+compute argon_temp49 argon_group temp/region argon_layer49 
+ 
+region argon_layer50 block 56 57 0 3 0 3 units box 
+compute argon_temp50 argon_group temp/region argon_layer50 
+ 
+region argon_layer51 block 57 58 0 3 0 3 units box 
+compute argon_temp51 argon_group temp/region argon_layer51 
+ 
+region argon_layer52 block 58 59 0 3 0 3 units box 
+compute argon_temp52 argon_group temp/region argon_layer52 
+ 
+region argon_layer53 block 59 60 0 3 0 3 units box 
+compute argon_temp53 argon_group temp/region argon_layer53 
+ 
+region argon_layer54 block 60 61 0 3 0 3 units box 
+compute argon_temp54 argon_group temp/region argon_layer54 
+ 
+region argon_layer55 block 61 62 0 3 0 3 units box 
+compute argon_temp55 argon_group temp/region argon_layer55 
+ 
+region argon_layer56 block 62 63 0 3 0 3 units box 
+compute argon_temp56 argon_group temp/region argon_layer56 
+ 
+region argon_layer57 block 63 64 0 3 0 3 units box 
+compute argon_temp57 argon_group temp/region argon_layer57 
+ 
+region argon_layer58 block 64 65 0 3 0 3 units box 
+compute argon_temp58 argon_group temp/region argon_layer58 
+ 
+region argon_layer59 block 65 66 0 3 0 3 units box 
+compute argon_temp59 argon_group temp/region argon_layer59 
+ 
+region argon_layer60 block 66 67 0 3 0 3 units box 
+compute argon_temp60 argon_group temp/region argon_layer60 
+
+############################################################### 
+
+timestep 0.0001
+thermo_style custom step  c_argon_temp1  c_argon_temp2  c_argon_temp3  c_argon_temp4  c_argon_temp5  c_argon_temp6  c_argon_temp7  c_argon_temp8  c_argon_temp9  c_argon_temp10  c_argon_temp11  c_argon_temp12  c_argon_temp13  c_argon_temp14  c_argon_temp15  c_argon_temp16  c_argon_temp17  c_argon_temp18  c_argon_temp19  c_argon_temp20  c_argon_temp21  c_argon_temp22  c_argon_temp23  c_argon_temp24  c_argon_temp25  c_argon_temp26  c_argon_temp27  c_argon_temp28  c_argon_temp29  c_argon_temp30  c_argon_temp31  c_argon_temp32  c_argon_temp33  c_argon_temp34  c_argon_temp35  c_argon_temp36  c_argon_temp37  c_argon_temp38  c_argon_temp39  c_argon_temp40  c_argon_temp41  c_argon_temp42  c_argon_temp43  c_argon_temp44  c_argon_temp45  c_argon_temp46  c_argon_temp47  c_argon_temp48  c_argon_temp49  c_argon_temp50  c_argon_temp51  c_argon_temp52  c_argon_temp53  c_argon_temp54  c_argon_temp55  c_argon_temp56  c_argon_temp57  c_argon_temp58  c_argon_temp59  c_argon_temp60
+thermo 500
+
+dump xyz all xyz 5 [07.08]argon_temp-region.xyz
+
+
+
+
+
+
+run 2000
