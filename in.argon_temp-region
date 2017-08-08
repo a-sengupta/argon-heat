@@ -3,48 +3,47 @@ units     lj
 lattice   fcc 4
 region    overall block 0 74 0 3 0 3 units box
 region    argon_region block 7 67 0 3 0 3 units box
-create_box 1 overall
+create_box 4 overall
 
 ### Fixed Left ###
 
 region   box1 block 0 3 0 3 0 3 units box
 create_atoms  1 region box1
-group         fixed_left region box1
+group         fixed type 1
 
 ### Hot ###
 
 region   box2 block 3.1 7 0 3 0 3 units box
-create_atoms  1 region box2
-group         hot region box2
+create_atoms  2 region box2
+group         hot type 2
 
 
 ### Argon layer ###
 
 region layer1 block 7.1 67 0 3 0 3 units box 
-create_atoms  1 region layer1 
-
-#Group for argon already made below in particle and region properties section
+create_atoms  3 region layer1 
+group argon_group type 3
  
 
 
 ### Cold ###
 
 region   box4 block 67.1 71 0 3 0 3 units box
-create_atoms  1 region box4
-group         cold region box4
+create_atoms  4 region box4
+group         cold type 4
 
 ### Fixed Right ####
 
 region   box5 block 71.1 74 0 3 0 3 units box
 create_atoms  1 region box5
-group         fixed_right region box5
+#group already specified in fixed left section, since it is by type
 
 ### Particle and region properties ###
 mass * 1.0    
 pair_style   lj/cut 2.6
 pair_coeff   * * 1.0 1.0
 
-group argon_group region argon_region
+
 
 ##Set temp/region computes
 
@@ -237,9 +236,13 @@ compute argon_temp59 argon_group temp/region argon_layer59
 region argon_layer60 block 66 67 0 3 0 3 units box 
 compute argon_temp60 argon_group temp/region argon_layer60 
 
+##compute fixed_temp fixed temp #should always give 0 in thermo report
+
 ############################################################### 
 
 timestep 0.0001
+
+#thermo_style custom step etotal
 
 thermo_style custom step  c_argon_temp1  c_argon_temp2  c_argon_temp3  c_argon_temp4  c_argon_temp5  c_argon_temp6  c_argon_temp7  c_argon_temp8  c_argon_temp9  c_argon_temp10  c_argon_temp11  c_argon_temp12  c_argon_temp13  c_argon_temp14  c_argon_temp15  c_argon_temp16  c_argon_temp17  c_argon_temp18  c_argon_temp19  c_argon_temp20  c_argon_temp21  c_argon_temp22  c_argon_temp23  c_argon_temp24  c_argon_temp25  c_argon_temp26  c_argon_temp27  c_argon_temp28  c_argon_temp29  c_argon_temp30  c_argon_temp31  c_argon_temp32  c_argon_temp33  c_argon_temp34  c_argon_temp35  c_argon_temp36  c_argon_temp37  c_argon_temp38  c_argon_temp39  c_argon_temp40  c_argon_temp41  c_argon_temp42  c_argon_temp43  c_argon_temp44  c_argon_temp45  c_argon_temp46  c_argon_temp47  c_argon_temp48  c_argon_temp49  c_argon_temp50  c_argon_temp51  c_argon_temp52  c_argon_temp53  c_argon_temp54  c_argon_temp55  c_argon_temp56  c_argon_temp57  c_argon_temp58  c_argon_temp59  c_argon_temp60
 
@@ -266,21 +269,22 @@ unfix nve2
 unfix nve3
 
 ##Thermostats
-fix nvt_hot hot nvt temp 0.6608 0.6608 10
-fix_modify nvt_hot temp hot_temp
-
-fix nvt_cold cold nvt temp 0.0400 0.0400 10
-fix_modify nvt_cold temp cold_temp
-
-#fix nvt_argon argon_group nvt temp 0.0826 0.0826 10
-#fix_modify nvt_argon temp argon_temp
+fix nvt_hot hot nvt temp 0.04 0.6608 0.01
 
 
-run 6000 
+fix nvt_cold cold nvt temp 0.04 0.04 0.01
 
 
+#fix nvt_argon argon_group nvt temp 0.0826 0.0826 0.01
 
 
+thermo 500
+run 100 #raise temperature quickly
+
+unfix nvt_hot
+fix nvt_hot2 hot nvt temp 0.6608 0.6608 0.01
+
+run 6000
 
 
 #dump xyz all xyz 5 [07.08]argon_temp-region_equib_nve.xyz
