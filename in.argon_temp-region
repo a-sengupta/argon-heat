@@ -265,11 +265,11 @@ fix nve3 cold nve
 thermo 500
 run 3000 #This should be changed to 3000000 if you want to run for 3 ns as in paper
 
-unfix nve2
+#unfix nve2
 unfix nve3
 
 ##Thermostats
-fix nvt_hot hot nvt temp 0.04 0.6608 0.01
+fix nvt_hot hot temp/berendsen 0.6608 0.6608 0.01
 
 
 fix nvt_cold cold nvt temp 0.04 0.04 0.01
@@ -282,6 +282,7 @@ thermo 500
 run 100 #raise temperature quickly
 
 unfix nvt_hot
+unfix nve2
 fix nvt_hot2 hot nvt temp 0.6608 0.6608 0.01
 
 run 6000
