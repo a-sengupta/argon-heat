@@ -1,7 +1,9 @@
 dimension 3
+boundary  f p p
+atom_style atomic
 units     lj
-lattice   fcc 4
-region    overall block 0 74 0 3 0 3 units box
+lattice   fcc 1 #now atoms should be at eq positions
+region    overall block -10 100 0 3 0 3 units box
 region    argon_region block 7 67 0 3 0 3 units box
 create_box 4 overall
 
@@ -237,14 +239,18 @@ region argon_layer60 block 66 67 0 3 0 3 units box
 compute argon_temp60 argon_group temp/region argon_layer60 
 
 ##compute fixed_temp fixed temp #should always give 0 in thermo report
-
+group moving union argon_group hot cold
+compute moving_temp moving temp
+compute moving_pe moving pe/atom pair
+compute moving_pe_sum moving reduce ave c_moving_pe
+#delete_atoms group fixed
 ############################################################### 
 
-timestep 0.0001
+timestep 0.000001
 
-#thermo_style custom step etotal
+thermo_style custom step c_moving_pe_sum etotal c_moving_temp
 
-thermo_style custom step  c_argon_temp1  c_argon_temp2  c_argon_temp3  c_argon_temp4  c_argon_temp5  c_argon_temp6  c_argon_temp7  c_argon_temp8  c_argon_temp9  c_argon_temp10  c_argon_temp11  c_argon_temp12  c_argon_temp13  c_argon_temp14  c_argon_temp15  c_argon_temp16  c_argon_temp17  c_argon_temp18  c_argon_temp19  c_argon_temp20  c_argon_temp21  c_argon_temp22  c_argon_temp23  c_argon_temp24  c_argon_temp25  c_argon_temp26  c_argon_temp27  c_argon_temp28  c_argon_temp29  c_argon_temp30  c_argon_temp31  c_argon_temp32  c_argon_temp33  c_argon_temp34  c_argon_temp35  c_argon_temp36  c_argon_temp37  c_argon_temp38  c_argon_temp39  c_argon_temp40  c_argon_temp41  c_argon_temp42  c_argon_temp43  c_argon_temp44  c_argon_temp45  c_argon_temp46  c_argon_temp47  c_argon_temp48  c_argon_temp49  c_argon_temp50  c_argon_temp51  c_argon_temp52  c_argon_temp53  c_argon_temp54  c_argon_temp55  c_argon_temp56  c_argon_temp57  c_argon_temp58  c_argon_temp59  c_argon_temp60
+#thermo_style custom step  c_argon_temp1  c_argon_temp2  c_argon_temp3  c_argon_temp4  c_argon_temp5  c_argon_temp6  c_argon_temp7  c_argon_temp8  c_argon_temp9  c_argon_temp10  c_argon_temp11  c_argon_temp12  c_argon_temp13  c_argon_temp14  c_argon_temp15  c_argon_temp16  c_argon_temp17  c_argon_temp18  c_argon_temp19  c_argon_temp20  c_argon_temp21  c_argon_temp22  c_argon_temp23  c_argon_temp24  c_argon_temp25  c_argon_temp26  c_argon_temp27  c_argon_temp28  c_argon_temp29  c_argon_temp30  c_argon_temp31  c_argon_temp32  c_argon_temp33  c_argon_temp34  c_argon_temp35  c_argon_temp36  c_argon_temp37  c_argon_temp38  c_argon_temp39  c_argon_temp40  c_argon_temp41  c_argon_temp42  c_argon_temp43  c_argon_temp44  c_argon_temp45  c_argon_temp46  c_argon_temp47  c_argon_temp48  c_argon_temp49  c_argon_temp50  c_argon_temp51  c_argon_temp52  c_argon_temp53  c_argon_temp54  c_argon_temp55  c_argon_temp56  c_argon_temp57  c_argon_temp58  c_argon_temp59  c_argon_temp60
 
 
 
@@ -256,38 +262,45 @@ velocity  cold create 0.0826 28712 mom yes rot yes dist gaussian
 #velocity  all set NULL NULL NULL units box
 velocity  argon_group create 0.0826 28713 mom yes rot yes dist gaussian
 
+#velocity moving create 0.0826 28711 mom yes rot yes dist gaussian
+
 #NVE Integrators
+
+#fix spring all spring/self 55000
+
 
 fix nve1 argon_group nve
 fix nve2 hot nve
 fix nve3 cold nve
 
+#dump xyz all xyz 500 [10.08]argon_temp-region_equib_nve.xyz
+
 thermo 500
-run 3000 #This should be changed to 3000000 if you want to run for 3 ns as in paper
+run 100000 #This should be changed to 3000000 if you want to run for 3 ns as in paper
 
 #unfix nve2
-unfix nve3
+#unfix nve3
 
 ##Thermostats
-fix nvt_hot hot temp/berendsen 0.6608 0.6608 0.01
+#fix nvt_hot hot temp/berendsen 0.6608 0.6608 0.01
 
 
-fix nvt_cold cold nvt temp 0.04 0.04 0.01
+#fix nvt_cold cold nvt temp 0.04 0.04 0.01
 
 
 #fix nvt_argon argon_group nvt temp 0.0826 0.0826 0.01
 
 
-thermo 500
-run 100 #raise temperature quickly
+#thermo 500
+#run 100 #raise temperature quickly
 
-unfix nvt_hot
-unfix nve2
-fix nvt_hot2 hot nvt temp 0.6608 0.6608 0.01
+#unfix nvt_hot
+#unfix nve2
+#fix nvt_hot2 hot nvt temp 0.6608 0.6608 0.01
 
-run 6000
+#run 6000
 
 
-#dump xyz all xyz 5 [07.08]argon_temp-region_equib_nve.xyz
+
 
 
