@@ -2,18 +2,18 @@ dimension 3
 boundary  f p p
 atom_style atomic
 units     lj
-lattice   fcc 1 #now atoms should be at eq positions
+lattice   fcc 1 #now corner atoms should be at eq positions
 region    overall block -10 100 0 3 0 3 units box
 
 create_box 4 overall      #type 1 = immobile, type 2 = thermostatted (hot), type 3 = unthermalised, type 4 = thermostatted (cold)
 
-variable a equal 2^(2/3)
+
 
 ## System parameters ##
 
 variable a equal 2^(1/6)   #lattice constant in LJ units, i.e. mininumum of LJ
-variable y equal 3*$a      #width of box
-variable z equal 3*$a      #breadth of box
+variable y equal 5*$a      #width of box
+variable z equal 5*$a      #breadth of box
 
 ### Fixed Left ###
 
@@ -40,7 +40,7 @@ group         hot type 2
 
 ### Argon layer ###
 
-variable n_argon equal 40  #number of layers
+variable n_argon equal 53  #number of layers
 
 
 variable x_argon1 equal ${x_hot2}+0.00001
@@ -100,201 +100,322 @@ variable argon_temp1_lo equal ${x_argon1}+0*${diff}
 variable argon_temp1_hi equal ${x_argon1}+1*${diff} 
 region argon_layer1 block ${argon_temp1_lo} ${argon_temp1_hi} 0 $y 0 $z units box 
 compute argon_temp1 argon_group temp/region argon_layer1 
+fix argon_av_temp1 argon_group ave/time 1 300 1000 c_argon_temp1 
  
 variable argon_temp2_lo equal ${x_argon1}+1*${diff} 
 variable argon_temp2_hi equal ${x_argon1}+2*${diff} 
 region argon_layer2 block ${argon_temp2_lo} ${argon_temp2_hi} 0 $y 0 $z units box 
 compute argon_temp2 argon_group temp/region argon_layer2 
+fix argon_av_temp2 argon_group ave/time 1 300 1000 c_argon_temp2 
  
 variable argon_temp3_lo equal ${x_argon1}+2*${diff} 
 variable argon_temp3_hi equal ${x_argon1}+3*${diff} 
 region argon_layer3 block ${argon_temp3_lo} ${argon_temp3_hi} 0 $y 0 $z units box 
 compute argon_temp3 argon_group temp/region argon_layer3 
+fix argon_av_temp3 argon_group ave/time 1 300 1000 c_argon_temp3 
  
 variable argon_temp4_lo equal ${x_argon1}+3*${diff} 
 variable argon_temp4_hi equal ${x_argon1}+4*${diff} 
 region argon_layer4 block ${argon_temp4_lo} ${argon_temp4_hi} 0 $y 0 $z units box 
 compute argon_temp4 argon_group temp/region argon_layer4 
+fix argon_av_temp4 argon_group ave/time 1 300 1000 c_argon_temp4 
  
 variable argon_temp5_lo equal ${x_argon1}+4*${diff} 
 variable argon_temp5_hi equal ${x_argon1}+5*${diff} 
 region argon_layer5 block ${argon_temp5_lo} ${argon_temp5_hi} 0 $y 0 $z units box 
 compute argon_temp5 argon_group temp/region argon_layer5 
+fix argon_av_temp5 argon_group ave/time 1 300 1000 c_argon_temp5 
  
 variable argon_temp6_lo equal ${x_argon1}+5*${diff} 
 variable argon_temp6_hi equal ${x_argon1}+6*${diff} 
 region argon_layer6 block ${argon_temp6_lo} ${argon_temp6_hi} 0 $y 0 $z units box 
 compute argon_temp6 argon_group temp/region argon_layer6 
+fix argon_av_temp6 argon_group ave/time 1 300 1000 c_argon_temp6 
  
 variable argon_temp7_lo equal ${x_argon1}+6*${diff} 
 variable argon_temp7_hi equal ${x_argon1}+7*${diff} 
 region argon_layer7 block ${argon_temp7_lo} ${argon_temp7_hi} 0 $y 0 $z units box 
 compute argon_temp7 argon_group temp/region argon_layer7 
+fix argon_av_temp7 argon_group ave/time 1 300 1000 c_argon_temp7 
  
 variable argon_temp8_lo equal ${x_argon1}+7*${diff} 
 variable argon_temp8_hi equal ${x_argon1}+8*${diff} 
 region argon_layer8 block ${argon_temp8_lo} ${argon_temp8_hi} 0 $y 0 $z units box 
 compute argon_temp8 argon_group temp/region argon_layer8 
+fix argon_av_temp8 argon_group ave/time 1 300 1000 c_argon_temp8 
  
 variable argon_temp9_lo equal ${x_argon1}+8*${diff} 
 variable argon_temp9_hi equal ${x_argon1}+9*${diff} 
 region argon_layer9 block ${argon_temp9_lo} ${argon_temp9_hi} 0 $y 0 $z units box 
 compute argon_temp9 argon_group temp/region argon_layer9 
+fix argon_av_temp9 argon_group ave/time 1 300 1000 c_argon_temp9 
  
 variable argon_temp10_lo equal ${x_argon1}+9*${diff} 
 variable argon_temp10_hi equal ${x_argon1}+10*${diff} 
 region argon_layer10 block ${argon_temp10_lo} ${argon_temp10_hi} 0 $y 0 $z units box 
 compute argon_temp10 argon_group temp/region argon_layer10 
+fix argon_av_temp10 argon_group ave/time 1 300 1000 c_argon_temp10 
  
 variable argon_temp11_lo equal ${x_argon1}+10*${diff} 
 variable argon_temp11_hi equal ${x_argon1}+11*${diff} 
 region argon_layer11 block ${argon_temp11_lo} ${argon_temp11_hi} 0 $y 0 $z units box 
 compute argon_temp11 argon_group temp/region argon_layer11 
+fix argon_av_temp11 argon_group ave/time 1 300 1000 c_argon_temp11 
  
 variable argon_temp12_lo equal ${x_argon1}+11*${diff} 
 variable argon_temp12_hi equal ${x_argon1}+12*${diff} 
 region argon_layer12 block ${argon_temp12_lo} ${argon_temp12_hi} 0 $y 0 $z units box 
 compute argon_temp12 argon_group temp/region argon_layer12 
+fix argon_av_temp12 argon_group ave/time 1 300 1000 c_argon_temp12 
  
 variable argon_temp13_lo equal ${x_argon1}+12*${diff} 
 variable argon_temp13_hi equal ${x_argon1}+13*${diff} 
 region argon_layer13 block ${argon_temp13_lo} ${argon_temp13_hi} 0 $y 0 $z units box 
 compute argon_temp13 argon_group temp/region argon_layer13 
+fix argon_av_temp13 argon_group ave/time 1 300 1000 c_argon_temp13 
  
 variable argon_temp14_lo equal ${x_argon1}+13*${diff} 
 variable argon_temp14_hi equal ${x_argon1}+14*${diff} 
 region argon_layer14 block ${argon_temp14_lo} ${argon_temp14_hi} 0 $y 0 $z units box 
 compute argon_temp14 argon_group temp/region argon_layer14 
+fix argon_av_temp14 argon_group ave/time 1 300 1000 c_argon_temp14 
  
 variable argon_temp15_lo equal ${x_argon1}+14*${diff} 
 variable argon_temp15_hi equal ${x_argon1}+15*${diff} 
 region argon_layer15 block ${argon_temp15_lo} ${argon_temp15_hi} 0 $y 0 $z units box 
 compute argon_temp15 argon_group temp/region argon_layer15 
+fix argon_av_temp15 argon_group ave/time 1 300 1000 c_argon_temp15 
  
 variable argon_temp16_lo equal ${x_argon1}+15*${diff} 
 variable argon_temp16_hi equal ${x_argon1}+16*${diff} 
 region argon_layer16 block ${argon_temp16_lo} ${argon_temp16_hi} 0 $y 0 $z units box 
 compute argon_temp16 argon_group temp/region argon_layer16 
+fix argon_av_temp16 argon_group ave/time 1 300 1000 c_argon_temp16 
  
 variable argon_temp17_lo equal ${x_argon1}+16*${diff} 
 variable argon_temp17_hi equal ${x_argon1}+17*${diff} 
 region argon_layer17 block ${argon_temp17_lo} ${argon_temp17_hi} 0 $y 0 $z units box 
 compute argon_temp17 argon_group temp/region argon_layer17 
+fix argon_av_temp17 argon_group ave/time 1 300 1000 c_argon_temp17 
  
 variable argon_temp18_lo equal ${x_argon1}+17*${diff} 
 variable argon_temp18_hi equal ${x_argon1}+18*${diff} 
 region argon_layer18 block ${argon_temp18_lo} ${argon_temp18_hi} 0 $y 0 $z units box 
 compute argon_temp18 argon_group temp/region argon_layer18 
+fix argon_av_temp18 argon_group ave/time 1 300 1000 c_argon_temp18 
  
 variable argon_temp19_lo equal ${x_argon1}+18*${diff} 
 variable argon_temp19_hi equal ${x_argon1}+19*${diff} 
 region argon_layer19 block ${argon_temp19_lo} ${argon_temp19_hi} 0 $y 0 $z units box 
 compute argon_temp19 argon_group temp/region argon_layer19 
+fix argon_av_temp19 argon_group ave/time 1 300 1000 c_argon_temp19 
  
 variable argon_temp20_lo equal ${x_argon1}+19*${diff} 
 variable argon_temp20_hi equal ${x_argon1}+20*${diff} 
 region argon_layer20 block ${argon_temp20_lo} ${argon_temp20_hi} 0 $y 0 $z units box 
 compute argon_temp20 argon_group temp/region argon_layer20 
+fix argon_av_temp20 argon_group ave/time 1 300 1000 c_argon_temp20 
  
 variable argon_temp21_lo equal ${x_argon1}+20*${diff} 
 variable argon_temp21_hi equal ${x_argon1}+21*${diff} 
 region argon_layer21 block ${argon_temp21_lo} ${argon_temp21_hi} 0 $y 0 $z units box 
 compute argon_temp21 argon_group temp/region argon_layer21 
+fix argon_av_temp21 argon_group ave/time 1 300 1000 c_argon_temp21 
  
 variable argon_temp22_lo equal ${x_argon1}+21*${diff} 
 variable argon_temp22_hi equal ${x_argon1}+22*${diff} 
 region argon_layer22 block ${argon_temp22_lo} ${argon_temp22_hi} 0 $y 0 $z units box 
 compute argon_temp22 argon_group temp/region argon_layer22 
+fix argon_av_temp22 argon_group ave/time 1 300 1000 c_argon_temp22 
  
 variable argon_temp23_lo equal ${x_argon1}+22*${diff} 
 variable argon_temp23_hi equal ${x_argon1}+23*${diff} 
 region argon_layer23 block ${argon_temp23_lo} ${argon_temp23_hi} 0 $y 0 $z units box 
 compute argon_temp23 argon_group temp/region argon_layer23 
+fix argon_av_temp23 argon_group ave/time 1 300 1000 c_argon_temp23 
  
 variable argon_temp24_lo equal ${x_argon1}+23*${diff} 
 variable argon_temp24_hi equal ${x_argon1}+24*${diff} 
 region argon_layer24 block ${argon_temp24_lo} ${argon_temp24_hi} 0 $y 0 $z units box 
 compute argon_temp24 argon_group temp/region argon_layer24 
+fix argon_av_temp24 argon_group ave/time 1 300 1000 c_argon_temp24 
  
 variable argon_temp25_lo equal ${x_argon1}+24*${diff} 
 variable argon_temp25_hi equal ${x_argon1}+25*${diff} 
 region argon_layer25 block ${argon_temp25_lo} ${argon_temp25_hi} 0 $y 0 $z units box 
 compute argon_temp25 argon_group temp/region argon_layer25 
+fix argon_av_temp25 argon_group ave/time 1 300 1000 c_argon_temp25 
  
 variable argon_temp26_lo equal ${x_argon1}+25*${diff} 
 variable argon_temp26_hi equal ${x_argon1}+26*${diff} 
 region argon_layer26 block ${argon_temp26_lo} ${argon_temp26_hi} 0 $y 0 $z units box 
 compute argon_temp26 argon_group temp/region argon_layer26 
+fix argon_av_temp26 argon_group ave/time 1 300 1000 c_argon_temp26 
  
 variable argon_temp27_lo equal ${x_argon1}+26*${diff} 
 variable argon_temp27_hi equal ${x_argon1}+27*${diff} 
 region argon_layer27 block ${argon_temp27_lo} ${argon_temp27_hi} 0 $y 0 $z units box 
 compute argon_temp27 argon_group temp/region argon_layer27 
+fix argon_av_temp27 argon_group ave/time 1 300 1000 c_argon_temp27 
  
 variable argon_temp28_lo equal ${x_argon1}+27*${diff} 
 variable argon_temp28_hi equal ${x_argon1}+28*${diff} 
 region argon_layer28 block ${argon_temp28_lo} ${argon_temp28_hi} 0 $y 0 $z units box 
 compute argon_temp28 argon_group temp/region argon_layer28 
+fix argon_av_temp28 argon_group ave/time 1 300 1000 c_argon_temp28 
  
 variable argon_temp29_lo equal ${x_argon1}+28*${diff} 
 variable argon_temp29_hi equal ${x_argon1}+29*${diff} 
 region argon_layer29 block ${argon_temp29_lo} ${argon_temp29_hi} 0 $y 0 $z units box 
 compute argon_temp29 argon_group temp/region argon_layer29 
+fix argon_av_temp29 argon_group ave/time 1 300 1000 c_argon_temp29 
  
 variable argon_temp30_lo equal ${x_argon1}+29*${diff} 
 variable argon_temp30_hi equal ${x_argon1}+30*${diff} 
 region argon_layer30 block ${argon_temp30_lo} ${argon_temp30_hi} 0 $y 0 $z units box 
 compute argon_temp30 argon_group temp/region argon_layer30 
+fix argon_av_temp30 argon_group ave/time 1 300 1000 c_argon_temp30 
  
 variable argon_temp31_lo equal ${x_argon1}+30*${diff} 
 variable argon_temp31_hi equal ${x_argon1}+31*${diff} 
 region argon_layer31 block ${argon_temp31_lo} ${argon_temp31_hi} 0 $y 0 $z units box 
 compute argon_temp31 argon_group temp/region argon_layer31 
+fix argon_av_temp31 argon_group ave/time 1 300 1000 c_argon_temp31 
  
 variable argon_temp32_lo equal ${x_argon1}+31*${diff} 
 variable argon_temp32_hi equal ${x_argon1}+32*${diff} 
 region argon_layer32 block ${argon_temp32_lo} ${argon_temp32_hi} 0 $y 0 $z units box 
 compute argon_temp32 argon_group temp/region argon_layer32 
+fix argon_av_temp32 argon_group ave/time 1 300 1000 c_argon_temp32 
  
 variable argon_temp33_lo equal ${x_argon1}+32*${diff} 
 variable argon_temp33_hi equal ${x_argon1}+33*${diff} 
 region argon_layer33 block ${argon_temp33_lo} ${argon_temp33_hi} 0 $y 0 $z units box 
 compute argon_temp33 argon_group temp/region argon_layer33 
+fix argon_av_temp33 argon_group ave/time 1 300 1000 c_argon_temp33 
  
 variable argon_temp34_lo equal ${x_argon1}+33*${diff} 
 variable argon_temp34_hi equal ${x_argon1}+34*${diff} 
 region argon_layer34 block ${argon_temp34_lo} ${argon_temp34_hi} 0 $y 0 $z units box 
 compute argon_temp34 argon_group temp/region argon_layer34 
+fix argon_av_temp34 argon_group ave/time 1 300 1000 c_argon_temp34 
  
 variable argon_temp35_lo equal ${x_argon1}+34*${diff} 
 variable argon_temp35_hi equal ${x_argon1}+35*${diff} 
 region argon_layer35 block ${argon_temp35_lo} ${argon_temp35_hi} 0 $y 0 $z units box 
 compute argon_temp35 argon_group temp/region argon_layer35 
+fix argon_av_temp35 argon_group ave/time 1 300 1000 c_argon_temp35 
  
 variable argon_temp36_lo equal ${x_argon1}+35*${diff} 
 variable argon_temp36_hi equal ${x_argon1}+36*${diff} 
 region argon_layer36 block ${argon_temp36_lo} ${argon_temp36_hi} 0 $y 0 $z units box 
 compute argon_temp36 argon_group temp/region argon_layer36 
+fix argon_av_temp36 argon_group ave/time 1 300 1000 c_argon_temp36 
  
 variable argon_temp37_lo equal ${x_argon1}+36*${diff} 
 variable argon_temp37_hi equal ${x_argon1}+37*${diff} 
 region argon_layer37 block ${argon_temp37_lo} ${argon_temp37_hi} 0 $y 0 $z units box 
 compute argon_temp37 argon_group temp/region argon_layer37 
+fix argon_av_temp37 argon_group ave/time 1 300 1000 c_argon_temp37 
  
 variable argon_temp38_lo equal ${x_argon1}+37*${diff} 
 variable argon_temp38_hi equal ${x_argon1}+38*${diff} 
 region argon_layer38 block ${argon_temp38_lo} ${argon_temp38_hi} 0 $y 0 $z units box 
 compute argon_temp38 argon_group temp/region argon_layer38 
+fix argon_av_temp38 argon_group ave/time 1 300 1000 c_argon_temp38 
  
 variable argon_temp39_lo equal ${x_argon1}+38*${diff} 
 variable argon_temp39_hi equal ${x_argon1}+39*${diff} 
 region argon_layer39 block ${argon_temp39_lo} ${argon_temp39_hi} 0 $y 0 $z units box 
 compute argon_temp39 argon_group temp/region argon_layer39 
+fix argon_av_temp39 argon_group ave/time 1 300 1000 c_argon_temp39 
  
 variable argon_temp40_lo equal ${x_argon1}+39*${diff} 
 variable argon_temp40_hi equal ${x_argon1}+40*${diff} 
 region argon_layer40 block ${argon_temp40_lo} ${argon_temp40_hi} 0 $y 0 $z units box 
 compute argon_temp40 argon_group temp/region argon_layer40 
+fix argon_av_temp40 argon_group ave/time 1 300 1000 c_argon_temp40 
+ 
+variable argon_temp41_lo equal ${x_argon1}+40*${diff} 
+variable argon_temp41_hi equal ${x_argon1}+41*${diff} 
+region argon_layer41 block ${argon_temp41_lo} ${argon_temp41_hi} 0 $y 0 $z units box 
+compute argon_temp41 argon_group temp/region argon_layer41 
+fix argon_av_temp41 argon_group ave/time 1 300 1000 c_argon_temp41 
+ 
+variable argon_temp42_lo equal ${x_argon1}+41*${diff} 
+variable argon_temp42_hi equal ${x_argon1}+42*${diff} 
+region argon_layer42 block ${argon_temp42_lo} ${argon_temp42_hi} 0 $y 0 $z units box 
+compute argon_temp42 argon_group temp/region argon_layer42 
+fix argon_av_temp42 argon_group ave/time 1 300 1000 c_argon_temp42 
+ 
+variable argon_temp43_lo equal ${x_argon1}+42*${diff} 
+variable argon_temp43_hi equal ${x_argon1}+43*${diff} 
+region argon_layer43 block ${argon_temp43_lo} ${argon_temp43_hi} 0 $y 0 $z units box 
+compute argon_temp43 argon_group temp/region argon_layer43 
+fix argon_av_temp43 argon_group ave/time 1 300 1000 c_argon_temp43 
+ 
+variable argon_temp44_lo equal ${x_argon1}+43*${diff} 
+variable argon_temp44_hi equal ${x_argon1}+44*${diff} 
+region argon_layer44 block ${argon_temp44_lo} ${argon_temp44_hi} 0 $y 0 $z units box 
+compute argon_temp44 argon_group temp/region argon_layer44 
+fix argon_av_temp44 argon_group ave/time 1 300 1000 c_argon_temp44 
+ 
+variable argon_temp45_lo equal ${x_argon1}+44*${diff} 
+variable argon_temp45_hi equal ${x_argon1}+45*${diff} 
+region argon_layer45 block ${argon_temp45_lo} ${argon_temp45_hi} 0 $y 0 $z units box 
+compute argon_temp45 argon_group temp/region argon_layer45 
+fix argon_av_temp45 argon_group ave/time 1 300 1000 c_argon_temp45 
+ 
+variable argon_temp46_lo equal ${x_argon1}+45*${diff} 
+variable argon_temp46_hi equal ${x_argon1}+46*${diff} 
+region argon_layer46 block ${argon_temp46_lo} ${argon_temp46_hi} 0 $y 0 $z units box 
+compute argon_temp46 argon_group temp/region argon_layer46 
+fix argon_av_temp46 argon_group ave/time 1 300 1000 c_argon_temp46 
+ 
+variable argon_temp47_lo equal ${x_argon1}+46*${diff} 
+variable argon_temp47_hi equal ${x_argon1}+47*${diff} 
+region argon_layer47 block ${argon_temp47_lo} ${argon_temp47_hi} 0 $y 0 $z units box 
+compute argon_temp47 argon_group temp/region argon_layer47 
+fix argon_av_temp47 argon_group ave/time 1 300 1000 c_argon_temp47 
+ 
+variable argon_temp48_lo equal ${x_argon1}+47*${diff} 
+variable argon_temp48_hi equal ${x_argon1}+48*${diff} 
+region argon_layer48 block ${argon_temp48_lo} ${argon_temp48_hi} 0 $y 0 $z units box 
+compute argon_temp48 argon_group temp/region argon_layer48 
+fix argon_av_temp48 argon_group ave/time 1 300 1000 c_argon_temp48 
+ 
+variable argon_temp49_lo equal ${x_argon1}+48*${diff} 
+variable argon_temp49_hi equal ${x_argon1}+49*${diff} 
+region argon_layer49 block ${argon_temp49_lo} ${argon_temp49_hi} 0 $y 0 $z units box 
+compute argon_temp49 argon_group temp/region argon_layer49 
+fix argon_av_temp49 argon_group ave/time 1 300 1000 c_argon_temp49 
+ 
+variable argon_temp50_lo equal ${x_argon1}+49*${diff} 
+variable argon_temp50_hi equal ${x_argon1}+50*${diff} 
+region argon_layer50 block ${argon_temp50_lo} ${argon_temp50_hi} 0 $y 0 $z units box 
+compute argon_temp50 argon_group temp/region argon_layer50 
+fix argon_av_temp50 argon_group ave/time 1 300 1000 c_argon_temp50 
+ 
+variable argon_temp51_lo equal ${x_argon1}+50*${diff} 
+variable argon_temp51_hi equal ${x_argon1}+51*${diff} 
+region argon_layer51 block ${argon_temp51_lo} ${argon_temp51_hi} 0 $y 0 $z units box 
+compute argon_temp51 argon_group temp/region argon_layer51 
+fix argon_av_temp51 argon_group ave/time 1 300 1000 c_argon_temp51 
+ 
+variable argon_temp52_lo equal ${x_argon1}+51*${diff} 
+variable argon_temp52_hi equal ${x_argon1}+52*${diff} 
+region argon_layer52 block ${argon_temp52_lo} ${argon_temp52_hi} 0 $y 0 $z units box 
+compute argon_temp52 argon_group temp/region argon_layer52 
+fix argon_av_temp52 argon_group ave/time 1 300 1000 c_argon_temp52 
+ 
+variable argon_temp53_lo equal ${x_argon1}+52*${diff} 
+variable argon_temp53_hi equal ${x_argon1}+53*${diff} 
+region argon_layer53 block ${argon_temp53_lo} ${argon_temp53_hi} 0 $y 0 $z units box 
+compute argon_temp53 argon_group temp/region argon_layer53 
+fix argon_av_temp53 argon_group ave/time 1 300 1000 c_argon_temp53 
+ 
+ 
+ 
  
 
 ##compute fixed_temp fixed temp #should always give 0 in thermo report
@@ -306,11 +427,8 @@ compute moving_pe_sum moving reduce ave c_moving_pe
 #delete_atoms group fixed
 ############################################################### 
 
-timestep 0.000001
+timestep 0.0005 #approx 1 femtosecond
 
-
-
-#thermo_style custom step  c_argon_temp1  c_argon_temp2  c_argon_temp3  c_argon_temp4  c_argon_temp5  c_argon_temp6  c_argon_temp7  c_argon_temp8  c_argon_temp9  c_argon_temp10  c_argon_temp11  c_argon_temp12  c_argon_temp13  c_argon_temp14  c_argon_temp15  c_argon_temp16  c_argon_temp17  c_argon_temp18  c_argon_temp19  c_argon_temp20  c_argon_temp21  c_argon_temp22  c_argon_temp23  c_argon_temp24  c_argon_temp25  c_argon_temp26  c_argon_temp27  c_argon_temp28  c_argon_temp29  c_argon_temp30  c_argon_temp31  c_argon_temp32  c_argon_temp33  c_argon_temp34  c_argon_temp35  c_argon_temp36  c_argon_temp37  c_argon_temp38  c_argon_temp39  c_argon_temp40
 
 
 
@@ -328,45 +446,54 @@ velocity moving create 0.0826 28711 mom yes rot yes dist gaussian
 
 #fix spring all spring/self 55000
 
-#fix thermostat moving langevin 0.0826 0.0826 0.0001 2342235 tally yes
+
 
 fix nve moving nve
 #fix nve2 hot nve
 #fix nve3 cold nve
 
-dump xyz all xyz 500 [22.08]argon_temp-region_equib-scaling-LONG(10ps).xyz
+#dump xyz all xyz 500 [24.08]argon_temp-region_equib-scaling-LONG(10ps).xyz
 
-
+#################################################### 10K temperature phase
 thermo_style custom step c_moving_pe_sum etotal c_hot_temp c_moving_temp 
 
-thermo 500
-run 100000  #This should be changed to 3000000 if you want to run for 3 ns as in paper
+thermo 5
+run 100  #This should be changed to 3000000 if you want to run for 3 ns as in paper
 velocity moving scale 0.0826
-run 100000 
+run 100
 velocity moving scale 0.0826
-run 100000
+run 100
 velocity moving scale 0.0826
-run 100000
+run 100
 velocity moving scale 0.0826
-run 100000
+run 100
 velocity moving scale 0.0826
-run 100000
+run 100
 velocity moving scale 0.0826
-run 100000
+run 100
 velocity moving scale 0.0826
-run 100000
+run 100
 velocity moving scale 0.0826
-run 100000
+run 100
 velocity moving scale 0.0826
-run 100000
+run 100
 velocity moving scale 0.0826
-thermo 50000
-run 9000000 #should bring total runtime to 10 ps
+fix thermostat moving langevin 0.0826 0.0826 0.1 2342235 tally yes
+thermo 50
+run 9000 #should bring total runtime to 10 ps
 
+print "NOW BEGINNING 1 NANOSECOND EQUILIBRATION AT 10K!!!"
 
-#unfix thermostat
-#fix thermostat2 hot langevin 0.0826 0.6 0.000001 987234 tally yes
-#fix thermostat3 cold langevin 0.0826 0.0826 0.0001 48756 tally yes
+thermo 10000  #thermo report every 10 picoseconds
+run 1000000 #should be 1 nanosecond
+#################################################### NVE phase, just like in argon paper (maybe I should not need to unfix thermostat in this phase, i.e. this NVE only phase is unnecessary)
+unfix thermostat
+#fix thermostat2 hot langevin 0.0826 0.6 1.0 987234 tally yes
+#fix thermostat3 cold langevin 0.0826 0.0826 1.0 48756 tally yes
+
+print "NOW BEGINNING NVE-ONLY EQUILIBRATION FOR 2 NANOSECONDS!!!"
+run 2000000 #should be 2 nanoseconds
+####################################################
 
 #thermo_style custom step c_moving_pe_sum etotal c_hot_temp c_moving_temp 
 
@@ -374,28 +501,32 @@ run 9000000 #should bring total runtime to 10 ps
 
 #print 'Next phase'
 #unfix thermostat2
-#fix thermostat4 hot langevin 0.6 0.6 0.0001 789475 tally yes
 
-#run 100000
+######################################################## Temperature rise from 10 to 80K phase
 
-#unfix nve2
-#unfix nve3
+fix thermostat4 hot langevin 0.0826 0.6 0.1 789475 tally yes
 
-##Thermostats
-#fix nvt_hot hot temp/berendsen 0.6608 0.6608 0.01
+fix thermostat5 cold langevin 0.0826 0.0826 0.1 87342 tally yes
 
+thermo 10 #thermo report every 10 femtoseconds
 
-#fix nvt_cold cold nvt temp 0.04 0.04 0.01
+thermo_style custom step c_hot_temp c_cold_temp c_argon_temp
 
 
-#fix nvt_argon argon_group nvt temp 0.0826 0.0826 0.01
 
+print "NOW RAISING TEMPERATURE OF HOT ATOMS TO 80K!!!"
+run 1000 #should be 1 ps of runtime
 
-#thermo 500
-#run 100 #raise temperature quickly
+velocity hot scale 0.6
 
-#unfix nvt_hot
-#unfix nve2
-#fix nvt_hot2 hot nvt temp 0.6608 0.6608 0.01
+######################################################### Steady state phase, hot at 80K, cold at 10K (or whatever constant temperature during NVE)
+unfix thermostat4
 
-#run 6000
+fix thermostat_hot hot langevin 0.6 0.6 0.1 837482 tally yes
+
+thermo_style custom c_hot_temp c_cold_temp step  f_argon_av_temp1  f_argon_av_temp2  f_argon_av_temp3  f_argon_av_temp4  f_argon_av_temp5  f_argon_av_temp6  f_argon_av_temp7  f_argon_av_temp8  f_argon_av_temp9  f_argon_av_temp10  f_argon_av_temp11  f_argon_av_temp12  f_argon_av_temp13  f_argon_av_temp14  f_argon_av_temp15  f_argon_av_temp16  f_argon_av_temp17  f_argon_av_temp18  f_argon_av_temp19  f_argon_av_temp20  f_argon_av_temp21  f_argon_av_temp22  f_argon_av_temp23  f_argon_av_temp24  f_argon_av_temp25  f_argon_av_temp26  f_argon_av_temp27  f_argon_av_temp28  f_argon_av_temp29  f_argon_av_temp30  f_argon_av_temp31  f_argon_av_temp32  f_argon_av_temp33  f_argon_av_temp34  f_argon_av_temp35  f_argon_av_temp36  f_argon_av_temp37  f_argon_av_temp38  f_argon_av_temp39  f_argon_av_temp40  f_argon_av_temp41  f_argon_av_temp42  f_argon_av_temp43  f_argon_av_temp44  f_argon_av_temp45  f_argon_av_temp46  f_argon_av_temp47  f_argon_av_temp48  f_argon_av_temp49  f_argon_av_temp50  f_argon_av_temp51  f_argon_av_temp52  f_argon_av_temp53
+
+thermo 1000 #thermo report every picosecond
+print "NOW RUNNING SYSTEM WITH HOT AT 80K AND COLD AT 10K, THERMO NOW GIVES TEMPERATURE PROFILE!!!"
+run 40000 #should be 40 ps of runtime
+
