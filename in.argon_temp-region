@@ -4,8 +4,10 @@ variable a equal 2^(1/6)   #lattice constant in LJ units, i.e. mininumum of LJ
 variable y equal 5*$a      #width of box
 variable z equal 5*$a      #breadth of box
 
-variable y_box equal $y*10
-variable z_box equal $z*10
+variable y_boxlo equal -0.5*$a
+variable y_boxhi equal $y+0.5*$a
+variable z_boxlo equal -0.5*$a
+variable z_boxhi equal $z+0.5*$a
 
 ##################################
 dimension 3
@@ -13,7 +15,7 @@ boundary  f p p
 atom_style atomic
 units     lj
 lattice   fcc 1 #now corner atoms should be at eq positions
-region    overall block -10 100 0 ${y_box} 0 ${z_box} units box
+region    overall block -10 100 ${y_boxlo} ${y_boxhi} ${z_boxlo} ${z_boxhi} units box
 
 create_box 4 overall      #type 1 = immobile, type 2 = thermostatted (hot), type 3 = unthermalised, type 4 = thermostatted (cold)
 
@@ -458,7 +460,7 @@ fix nve moving nve
 #fix nve2 hot nve
 #fix nve3 cold nve
 
-#dump xyz all xyz 500 [24.08]argon_temp-region_equib-scaling-LONG(10ps).xyz
+dump xyz all xyz 1000 [25.08]argon_temp-region.xyz
 
 #################################################### 10K temperature phase
 thermo_style custom step c_moving_pe_sum etotal c_hot_temp c_moving_temp 
