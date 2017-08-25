@@ -1,19 +1,25 @@
+## System parameters #############
+
+variable a equal 2^(1/6)   #lattice constant in LJ units, i.e. mininumum of LJ
+variable y equal 5*$a      #width of box
+variable z equal 5*$a      #breadth of box
+
+variable y_box equal $y*10
+variable z_box equal $z*10
+
+##################################
 dimension 3
 boundary  f p p
 atom_style atomic
 units     lj
 lattice   fcc 1 #now corner atoms should be at eq positions
-region    overall block -10 100 0 3 0 3 units box
+region    overall block -10 100 0 ${y_box} 0 ${z_box} units box
 
 create_box 4 overall      #type 1 = immobile, type 2 = thermostatted (hot), type 3 = unthermalised, type 4 = thermostatted (cold)
 
 
 
-## System parameters ##
 
-variable a equal 2^(1/6)   #lattice constant in LJ units, i.e. mininumum of LJ
-variable y equal 5*$a      #width of box
-variable z equal 5*$a      #breadth of box
 
 ### Fixed Left ###
 
