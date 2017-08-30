@@ -1,0 +1,284 @@
+## System parameters #############
+
+variable a equal 2^(1/6)   #lattice constant in LJ units, i.e. mininumum of LJ
+variable y equal 5*$a      #width of box
+variable z equal 5*$a      #breadth of box
+
+variable y_boxlo equal -0.5*$a
+variable y_boxhi equal $y+0.5*$a
+variable z_boxlo equal -0.5*$a
+variable z_boxhi equal $z+0.5*$a
+
+##################################
+dimension 3
+boundary  f p p
+atom_style atomic
+units     lj
+lattice   sc 1 #now corner atoms should be at eq positions
+region    overall block -10 100 ${y_boxlo} ${y_boxhi} ${z_boxlo} ${z_boxhi} units box
+
+create_box 4 overall      #type 1 = immobile, type 2 = thermostatted (hot), type 3 = unthermalised, type 4 = thermostatted (cold)
+
+
+
+
+
+### Fixed Left ###
+
+variable n_left equal 3  #number of layers
+
+variable x_left equal 3
+
+
+region   box1 block 0 3 0 $y 0 $z units box
+create_atoms  1 region box1
+
+
+### Hot ###
+
+variable n_hot equal 4.1  #number of layers
+
+variable x_hot1 equal ${x_left}+0.00001
+variable x_hot2 equal ${x_hot1}+${n_hot}
+
+region   box2 block ${x_hot1} ${x_hot2} 0 $y 0 $z units box
+create_atoms  2 region box2
+group         hot type 2
+
+
+### Argon layer ###
+
+variable n_argon equal 55  #number of layers
+
+
+variable x_argon1 equal ${x_hot2}+0.00001
+variable x_argon2 equal ${x_argon1}+${n_argon}
+
+region   box3 block ${x_argon1} ${x_argon2} 0 $y 0 $z units box
+create_atoms  3 region box3
+
+variable diff equal (${x_argon2}-${x_argon1})/${n_argon}
+
+group argon_group type 3
+
+### Cold ###
+
+variable n_cold equal 4  #number of layers
+
+variable x_cold1 equal ${x_argon2}+0.00001
+variable x_cold2 equal ${x_cold1}+${n_cold}
+
+region   box4 block ${x_cold1} ${x_cold2} 0 $y 0 $z units box
+create_atoms  4 region box4
+group         cold type 4
+
+
+### Fixed Right ####
+
+variable n_right equal 3  #number of layers
+
+variable x_right1 equal ${x_cold2}+0.00001
+variable x_right2 equal ${x_right1}+${n_right}
+
+region   box5 block ${x_right1} ${x_right2} 0 $y 0 $z units box
+create_atoms  1 region box5
+
+group         fixed type 1
+
+
+### Create vacuum gap ### (in the middle, 1 nm)
+
+variable vacuum_width equal 3.0
+
+variable vacuum_left equal ((${x_argon2}-${x_argon1})/2.0)-(${vacuum_width}/2.0) 
+variable vacuum_right equal ((${x_argon2}-${x_argon1})/2.0)+(${vacuum_width}/2.0)
+region  vacuum_gap block ${vacuum_left} ${vacuum_right} INF INF INF INF
+#delete_atoms region vacuum_gap
+
+
+### Particle and region properties ###
+mass * 1.0    
+variable cutoff equal 3*$a
+pair_style   lj/cut ${cutoff}
+pair_coeff   * * 1.0 1.0
+
+
+
+##Set bulk temp/region computes
+
+region hot_temp_region block ${x_hot1} ${x_hot2} INF INF INF INF
+compute hot_temp all temp/region hot_temp_region
+
+region cold_temp_region block ${x_cold1} ${x_cold2} INF INF INF INF
+compute cold_temp all temp/region cold_temp_region
+
+region argon_temp_region block ${x_argon1} ${x_argon2} INF INF INF INF
+compute argon_temp all temp/region argon_temp_region
+
+
+
+
+
+ 
+
+##compute fixed_temp fixed temp #should always give 0 in thermo report
+group moving type 2 3 4
+compute moving_temp moving temp
+
+compute moving_pe moving pe/atom pair
+compute moving_pe_sum moving reduce ave c_moving_pe
+#delete_atoms group fixed
+############################################################### 
+
+timestep 0.0005 #approx 1 femtosecond
+
+
+
+
+###############################################################
+
+##First set all non-fixed atoms at 10K
+#velocity  hot create 0.0826 28711 mom yes rot yes dist gaussian
+#velocity  cold create 0.0826 28712 mom yes rot yes dist gaussian
+#velocity  all set NULL NULL NULL units box
+#velocity  argon_group create 0.0826 28713 mom yes rot yes dist gaussian
+
+velocity moving create 0.0826 28711 mom yes rot yes dist gaussian
+
+#NVE Integrators
+
+#fix spring all spring/self 55000
+
+
+minimize 1.0e-4 1.0e-6 1000 1000
+fix nve moving nve
+#fix nve2 hot nve
+#fix nve3 cold nve
+
+dump xyz all xyz 1000 [29.08]argon__temp-region-TEST-mini-flux-Lall.xyz
+
+#################################################### 10K temperature phase
+thermo_style custom step c_moving_pe_sum etotal c_moving_temp 
+
+thermo 5
+run 100  #This should be changed to 3000000 if you want to run for 3 ns as in paper
+velocity moving scale 0.0826
+run 100
+velocity moving scale 0.0826
+run 100
+velocity moving scale 0.0826
+run 100
+velocity moving scale 0.0826
+run 100
+velocity moving scale 0.0826
+run 100
+velocity moving scale 0.0826
+run 100
+velocity moving scale 0.0826
+run 100
+velocity moving scale 0.0826
+run 100
+velocity moving scale 0.0826
+run 100
+velocity moving scale 0.0826
+fix thermostat moving langevin 0.0826 0.0826 0.1 2342235 tally yes
+thermo 50
+run 9000 #should bring total runtime to 10 ps
+
+print "NOW BEGINNING 1 NANOSECOND EQUILIBRATION AT 10K!!!"
+
+#thermo 10000  #thermo report every 10 picoseconds
+#run 1000000 #should be 1 nanosecond
+#################################################### NVE phase, just like in argon paper (maybe I should not need to unfix thermostat in this phase, i.e. this NVE only phase is unnecessary)
+unfix thermostat
+#fix thermostat2 hot langevin 0.0826 0.6 1.0 987234 tally yes
+#fix thermostat3 cold langevin 0.0826 0.0826 1.0 48756 tally yes
+
+#print "NOW BEGINNING NVE-ONLY EQUILIBRATION FOR 2 NANOSECONDS!!!"
+#run 2000000 #should be 2 nanoseconds
+####################################################
+
+#thermo_style custom step c_moving_pe_sum etotal c_moving_temp 
+
+#run 1000
+
+#print 'Next phase'
+#unfix thermostat2
+
+######################################################## Temperature rise from 10 to 80K phase
+compute      hot_group_temp hot temp
+compute      cold_group_temp cold temp
+
+
+fix thermostat4 all langevin 0.6 0.6 0.1 789475 tally yes
+fix_modify thermostat4 temp hot_temp
+
+fix thermostat5 all langevin 0.0826 0.0826 0.1 87342 tally yes
+fix_modify thermostat5 temp cold_temp
+
+thermo 10 #thermo report every 10 femtoseconds
+
+thermo_style custom step c_hot_temp c_cold_temp c_argon_temp f_thermostat4 f_thermostat5
+
+
+
+print "NOW RAISING TEMPERATURE OF HOT ATOMS TO 80K!!!"
+run 1000 #should be 1 ps of runtime
+
+velocity hot scale 0.6
+
+######################################################### Steady state phase, hot at 80K, cold at 10K (or whatever constant temperature during NVE)
+unfix thermostat4
+unfix thermostat5
+
+fix box2 all langevin 0.6 0.6 0.1 837482 tally yes
+fix box4 all langevin 0.0826 0.0826 0.1 98354 tally yes
+fix_modify box2 temp hot_temp
+fix_modify box4 temp cold_temp
+
+thermo_style custom step c_hot_temp c_cold_temp f_box2 f_box4 temp
+
+
+
+thermo 1000 #thermo report every picosecond
+print "NOW RUNNING SYSTEM WITH HOT AT 80K AND COLD AT 10K, THERMO NOW GIVES TEMPERATURE PROFILE!!!"
+run 40000 #should be 40 ps of runtime
+
+
+
+### Heat flux computes ###
+
+#reset thermostat tallies
+fix box2 hot langevin 0.6 0.6 0.1 837482 tally yes
+fix box4 cold langevin 0.0826 0.0826 0.1 98354 tally yes
+fix_modify box2 temp hot_temp
+fix_modify box4 temp cold_temp
+
+
+compute      KE_hot hot ke/atom
+
+compute      Stress_hot hot stress/atom hot_temp pair
+compute      PE_hot hot pe/atom pair
+
+
+compute      KE_cold cold ke/atom
+
+compute      Stress_cold cold stress/atom cold_temp pair
+compute      PE_cold cold pe/atom pair
+
+
+compute      hot_flux hot heat/flux KE_hot PE_hot Stress_hot
+#variable     volume equal "(${x_hot2}-${x_hot1})*${y}*${z}"
+variable     Jx equal c_hot_flux[1]/((${x_hot2}-${x_hot1})*${y}*${z})  
+variable     Jy equal c_hot_flux[2]/((${x_hot2}-${x_hot1})*${y}*${z})  
+
+compute      cold_flux cold heat/flux KE_cold PE_cold Stress_cold
+variable     Jx2 equal c_cold_flux[1]/((${x_hot2}-${x_hot1})*${y}*${z})          
+variable     Jy2 equal c_cold_flux[2]/((${x_hot2}-${x_hot1})*${y}*${z}) 
+
+
+
+thermo_style custom step c_hot_temp c_cold_temp step v_Jx v_Jy v_Jx2 v_Jy2 f_box2 f_box4 etotal
+print "NOW CHECKING FLUX IN AND OUT OF HOT AND COLD RESPECTIVELY"
+run 100000
+
